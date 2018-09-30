@@ -1,0 +1,18 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "net.teamio.mcrendertoimage",
+    "name": "Minecraft Render to Image",
+    "version": "$version",
+    "mcversion": "$mcversion",
+    "description": "A bare-bones mod that allows rendering in-world blocks to an image, e.g. for documentation purposes.",
+    "url": "https://github.com/Team-IO/mcrendertoimage",
+    "updateUrl": "",
+    "authorList": [ "founderio" ],
+    "credits": "Created by founderio, part of Team I/O",
+    "logoFile": "",
+    "screenshots": [  ],
+    "requiredMods": [ "Forge" ],
+    "useDependencyInformation": true
+  }]
+}

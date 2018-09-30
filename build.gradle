@@ -1,0 +1,76 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+	}
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+repositories {
+}
+
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+	def prop = new Properties()
+	prop.load(it)
+	project.ext.config = new ConfigSlurper().parse prop
+}
+
+version = config.mod_version
+group = config.mod_group
+archivesBaseName = "${config.mod_name}-${config.mc_version}"
+
+
+if(System.env.BUILD_NUMBER)
+	version = "${config.mod_version}.b${System.env.BUILD_NUMBER}"
+
+minecraft {
+	version = "${config.mc_version}-${config.forge_version}"
+	runDir = "run"
+	replace "@VERSION@", project.version
+	mappings = "${config.forge_mappings}"
+}
+
+dependencies {
+}
+
+jar {
+	// Exclude Gimp files
+	exclude '**/*.xcf'
+
+	// Exclude Audacity Files
+	exclude '**/*_data/*'
+	exclude '**/*.aup'
+
+	// Exclude Blender Files
+	exclude '**/*.blend'
+	exclude '**/*.blend?'
+
+	// Exclude .svg files
+	exclude '**/*.svg'
+}
+
+processResources
+{
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "mod_version", project.version
+	inputs.property "mc_version", project.minecraft.version
+
+	// Replace properties in info files
+	from(sourceSets.main.resources.srcDirs) {
+		include '*.info'
+		expand 'version':project.version,'mcversion':project.minecraft.version
+	}
+
+	// copy everything else, except the the mcmod.info
+	from(sourceSets.main.resources.srcDirs) {
+		exclude "mcmod.info"
+	}
+}
